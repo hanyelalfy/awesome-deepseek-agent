@@ -1,47 +1,37 @@
-<div align="center">
+# FaultCost
 
-# Awesome DeepSeek Agent
+نظام لإدارة أعطال المصنع وتحليل زمن التوقف والهدر وتكلفة القطع، مع تطبيق ميداني ولوحة متابعة وتكامل مع تطبيق الجودة **FAC**.
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+> **الحالة:** قيد البناء. هذا المستودع كان دليلًا توثيقيًا لأدوات DeepSeek؛ يجري تحويله إلى تطبيق FaultCost. لا تستخدمه لتسجيل بيانات تشغيل أو تكاليف حقيقية قبل اكتمال المصادقة والتخزين الدائم والمراجعة الأمنية.
 
-A curated list of guides for integrating **DeepSeek** models into popular AI agent and coding-assistant tools.
+## مبدأ المحاسبة الزمنية
 
-Each guide walks through installation, configuration, and first run — so you can start using DeepSeek-V4-Pro or DeepSeek-V4-Flash inside your favorite tool in a few minutes.
+- يبدأ زمن خسارة الإنتاج عند الإبلاغ، حتى لو ظل العطل منتظرًا فنيًا.
+- يبدأ زمن مسؤولية القسم عند إسناد فني، لا عند فتح البلاغ.
+- تُسجّل مراحل الانتظار والاستجابة والتشخيص والغيار والإصلاح والاختبار والمعوقات منفصلة، ولا تُجمع فترات متداخلة مرتين.
+- لا يُعرض معامل خسارة مركب قبل اعتماد معادلته ومعاييره. عند غياب معيار، تعرض المكونات المتاحة ويكون معامل المقارنة غير متاح.
+- إغلاق العطل يتطلب اختبارًا وسببًا جذريًا واعتماد مراقب التكاليف.
 
-</div>
+## المعمارية المستهدفة
 
+| المكوّن | التقنية | الدور |
+|---|---|---|
+| الخادم | Dart / Serverpod 4 | المجال، المصادقة، الصلاحيات، الإسناد، واجهات API والتدقيق |
+| تطبيق المصنع | Flutter | تسجيل الأعطال وتحديثها والعمل دون اتصال مع طابور مزامنة واضح |
+| لوحة الإدارة | React / TypeScript | إدارة الأصول والتقارير والتحليلات |
+| التطوير المحلي | PostgreSQL المضمّنة في Serverpod | قاعدة بيانات دون Docker؛ يضاف Redis فقط عند الحاجة المثبتة |
+| تطبيق الجودة | FAC عبر API / Cloud Functions | تبادل أحداث جودة بعقد مُصدّر؛ لا اتصال مباشر من تطبيقات المستخدمين إلى Firestore |
 
-## Contents
+قاعدة المجال والاختبارات الأولية موجودة في `server/fault_cost_server`. بقية التطبيقات والتكاملات تُضاف تدريجيًا، بعد تثبيت عقد الخادم وبيانات FAC الحقيقية.
 
-| Tool            | Description                                                                                                 | Guide                          |
-| --------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **AstrBot** | Open-source agent assistant for Feishu, Telegram and more, extensible with skills, plugins, and MCPs. | [Guide](./docs/astrbot.md) |
-| **Cherry Studio** | Open-source cross-platform desktop AI client with 300+ assistants, MCP support, knowledge bases, and multi-model chat. | [Guide](./docs/cherry_studio.md) |
-| **Claude Code** | AI coding assistant that runs in the terminal.                                                              | [Guide](./docs/claude_code.md) |
-| **Cline** | AI coding assistant extension for VS Code supporting multiple API providers. | [Guide](./docs/cline.md) |
-| **Codex** | OpenAI's coding agent. | [Guide](./docs/codex.md) |
-| **Crush**       | Glamorous open-source AI coding agent for the terminal with multi-model support and LSP integration.        | [Guide](./docs/crush.md)       |
-| **Deep Code** | Open-source terminal AI coding assistant for the DeepSeek-V4 model with deep thinking, reasoning effort control, and Agent Skills. | [Guide](./docs/deepcode.md) |
-| **DeepSeek-TUI** | Open-source Rust terminal coding assistant for DeepSeek-V4 — Codex-style architecture, sandboxed tools, MCP client + server, 1M context. | [Guide](./docs/deepseek-tui.md) |
-| **GitHub Copilot** | AI peer programmer built into VS Code. | [Guide](./docs/github_copilot.md) |
-| **GitHub Copilot CLI** | Terminal-native AI coding assistant with agentic capabilities. | [Guide](./docs/copilot_cli.md) |
-| **Hermes**      | Open-source self-improving AI agent built by Nous Research.                                                 | [Guide](./docs/hermes.md)      |
-| **Kilo Code** | AI coding assistant available as a CLI and editor extension. | [Guide](./docs/kilo_code.md) |
-| **Langcli** | Open-source AI coding assistant that is 100% compatible with Claude Code and supports mainstream LLM models | [Guide](./docs/langcli.md) |
-| **LobeHub** | LobeHub is your Chief Agent Operator, organizing your agents into 7×24 operations by hiring, scheduling, and reporting on your entire AI team. | [Guide](./docs/lobehub.md) |
-| **nanobot** | Open-source lightweight AI agent with chat platform integration, memory, MCP, and more. | [Guide](./docs/nanobot.md) |
-| **Oh My Pi** | Terminal AI coding agent forked from Pi with OMP-specific tools, model roles, MCP, plugins, and agent workflows. | [Guide](./docs/oh-my-pi.md) |
-| **OpenClaw**    | Open-source personal AI assistant that plugs into chat tools (Feishu, WeChat) and is extensible via Skills. | [Guide](./docs/openclaw.md)    |
-| **OpenCode**    | Open-source AI coding assistant available in terminal, web, and other forms.                                | [Guide](./docs/opencode.md)    |
-| **Pi**          | Minimal, extensible terminal coding harness with tree-structured sessions and custom providers.               | [Guide](./docs/pi_mono.md)     |
-| **Reasonix**    | DeepSeek-native coding agent that runs in the terminal — cache-first loop, MCP-native.                      | [Guide](./docs/reasonix.md)    |
-| **WorkBuddy/CodeBuddy** | AI agent and coding assistant with custom OpenAI-compatible model configuration. | [Guide](./docs/workbuddy.md) |
+## التطوير والاختبارات
 
-## Resources
+يتطلب اختبار حزمة المجال Dart 3.12.2 أو أحدث. أوامر الحزمة:
 
-- [DeepSeek Platform](https://platform.deepseek.com/) — get an API key.
-- [DeepSeek API Docs](https://api-docs.deepseek.com/) — API reference and guides.
+```powershell
+cd server\fault_cost_server
+dart pub get
+dart test
+```
 
-## Contributing
-
-Have another tool you'd like to see here? See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on opening an issue or a pull request with a new guide.
+لا توجد حتى الآن خدمة Serverpod أو تطبيقات Flutter وReact أو ملفات نموذج بيانات FAC أو ملفات نموذج ثلاثي الأبعاد أو إعدادات تشغيل إنتاج. لا تُدخل بيانات مصنع حقيقية ولا تضف أسرارًا إلى المستودع. راجع `docs/architecture.md` و`docs/fac-integration.md` لقرارات المجال وحدود التكامل.

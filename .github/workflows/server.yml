@@ -1,0 +1,31 @@
+name: Server domain
+
+on:
+  push:
+    paths:
+      - "server/fault_cost_server/**"
+      - "packages/fac_contract/**"
+      - ".github/workflows/server.yml"
+  pull_request:
+    paths:
+      - "server/fault_cost_server/**"
+      - "packages/fac_contract/**"
+      - ".github/workflows/server.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "3.13.5"
+      - name: Install dependencies
+        working-directory: server/fault_cost_server
+        run: dart pub get
+      - name: Analyze
+        working-directory: server/fault_cost_server
+        run: dart analyze
+      - name: Test
+        working-directory: server/fault_cost_server
+        run: dart test
