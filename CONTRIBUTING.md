@@ -12,17 +12,16 @@ FaultCost is being developed as a safety-conscious maintenance and cost-analysis
 
 ## Validation
 
-Run the relevant checks from the package being changed:
+Run the relevant checks:
 
 ```powershell
-cd server\fault_cost_server
-dart pub get
-dart format --output=none --set-exit-if-changed lib test
-dart analyze
-dart test
+npm install
+npm run build
+npm run test:domain
+npm run test:rules
 ```
 
-For Flutter, web-admin, and integration packages, use the commands in that package's README after its scaffold and lockfile are added. Do not claim a package is validated if its toolchain or required FAC test environment is unavailable.
+The Firestore rules suite uses only the local Firebase Emulator Suite with project ID `demo-faultcost-local`. Do not point tests at a production project.
 
 ## Change expectations
 

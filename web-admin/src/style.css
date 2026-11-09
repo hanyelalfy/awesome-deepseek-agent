@@ -51,7 +51,7 @@ a {
   align-items: center;
   gap: 11px;
   color: #1a2c39;
-  font-family: Inter, sans-serif;
+  font-family: "IBM Plex Sans Arabic", Arial, sans-serif;
   font-size: 19px;
   font-weight: 750;
   letter-spacing: -0.5px;
@@ -161,7 +161,7 @@ h1 span {
 
 .welcome-mark span {
   color: #35746e;
-  font-family: Inter, sans-serif;
+  font-family: "IBM Plex Sans Arabic", Arial, sans-serif;
   font-size: 52px;
   font-weight: 700;
   letter-spacing: -4px;
@@ -229,6 +229,188 @@ h1 span {
   background: white;
   color: #71817e;
   font-size: 10px;
+  white-space: nowrap;
+}
+
+.auth-panel {
+  margin-bottom: 20px;
+}
+
+.auth-copy {
+  margin: 0;
+  color: #78868e;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.env-hint {
+  display: block;
+  margin-top: 11px;
+  padding: 9px 11px;
+  overflow-wrap: anywhere;
+  border: 1px solid #e8edef;
+  border-radius: 7px;
+  background: #f7f9fa;
+  color: #63737e;
+  font-size: 10px;
+  direction: ltr;
+  text-align: left;
+}
+
+.login-form,
+.fault-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+
+.login-form label,
+.fault-form label {
+  min-width: 150px;
+  flex: 1 1 170px;
+  display: grid;
+  gap: 5px;
+  color: #65747e;
+  font-size: 10px;
+}
+
+.login-form input,
+.fault-form input,
+.fault-form select,
+.inline-close input {
+  width: 100%;
+  min-height: 37px;
+  padding: 7px 10px;
+  border: 1px solid #dfe6e9;
+  border-radius: 7px;
+  outline: none;
+  background: #fff;
+  color: #30414c;
+  font: inherit;
+  font-size: 11px;
+}
+
+.login-form input:focus,
+.fault-form input:focus,
+.fault-form select:focus,
+.inline-close input:focus {
+  border-color: #69a399;
+  box-shadow: 0 0 0 3px rgba(67, 140, 128, 0.1);
+}
+
+.primary-button,
+.secondary-button,
+.fault-actions button,
+.text-button {
+  min-height: 35px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+}
+
+.primary-button,
+.fault-actions button {
+  background: #28746b;
+  color: white;
+}
+
+.secondary-button {
+  margin-top: 10px;
+  border: 1px solid #dfe8e7;
+  background: #f4f8f7;
+  color: #42766f;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.fault-actions button:disabled,
+.text-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.error-message {
+  margin: 10px 0;
+  color: #a64c4c;
+  font-size: 11px;
+  direction: ltr;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.loading-message {
+  color: #77868e;
+  font-size: 10px;
+}
+
+.auth-actions,
+.fault-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.text-button {
+  background: transparent;
+  color: #71818a;
+}
+
+.compact-empty {
+  min-height: 80px;
+}
+
+.fault-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.fault-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #edf0f1;
+  border-radius: 8px;
+  background: #fcfdfd;
+}
+
+.fault-row > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.fault-row strong {
+  color: #334651;
+  font-size: 11px;
+  direction: ltr;
+  text-align: right;
+}
+
+.fault-row span {
+  color: #89959b;
+  font-size: 9px;
+}
+
+.inline-close {
+  display: flex;
+  gap: 5px;
+}
+
+.inline-close input {
+  min-width: 110px;
+  min-height: 32px;
+}
+
+.inline-close button {
   white-space: nowrap;
 }
 
@@ -360,7 +542,7 @@ h1 span {
   display: block;
   margin-bottom: 12px;
   color: #4d8c83;
-  font-family: Inter, sans-serif;
+  font-family: "IBM Plex Sans Arabic", Arial, sans-serif;
   font-size: 10px;
   font-weight: 700;
   direction: ltr;
@@ -554,7 +736,7 @@ footer {
 footer b {
   margin-inline-start: 6px;
   color: #4d817a;
-  font-family: Inter, sans-serif;
+  font-family: "IBM Plex Sans Arabic", Arial, sans-serif;
   font-size: 9px;
   font-weight: 600;
   direction: ltr;

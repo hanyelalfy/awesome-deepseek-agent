@@ -27,7 +27,7 @@ Events include stable IDs, UTC occurrence times, and an idempotency key. A recei
 
 1. Inspect the FAC repository and its deployed API/Cloud Functions, Firestore data shapes, rules, service identities, and existing tests.
 2. Confirm event ownership, identifiers, retry behavior, authentication, and machine/part mapping with the FAC maintainer; update the versioned contract before coding transport adapters.
-3. Implement an outbox and idempotent event processor in FaultCost, plus an adapter that calls only the approved FAC surface. Keep event persistence and retries transactional; Redis is not required for the initial local setup.
+3. Implement an outbox and idempotent event processor in FaultCost, plus an adapter that calls only the approved FAC surface. Keep event persistence and retries transactional in Firestore; no external queue is required for the initial local setup.
 4. Add contract tests against FAC-compatible mocks, then integration tests against a non-production FAC environment. Do not enable production writes until both sides pass the agreed contract tests.
 
 ## Current limitation

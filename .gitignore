@@ -4,6 +4,8 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 build/
+functions/lib/
+.impeccable/
 
 # JavaScript
 node_modules/
@@ -13,6 +15,8 @@ dist/
 .env
 .env.*
 !.env.example
+.firebaserc
+!.firebaserc.example
 **/config/passwords.yaml
 **/config/development.yaml
 *.pem
