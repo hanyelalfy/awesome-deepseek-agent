@@ -1,0 +1,104 @@
+contract: faultcost-fac
+version: 1
+transport: fac-api-or-cloud-functions
+authentication:
+  mechanism: "Must match the deployed FAC service-to-service identity policy."
+  requirements:
+    - authenticate-the-calling-service
+    - authorize-each-event-type-and-resource
+    - tls-required
+    - no-client-firestore-credentials
+  replayWindowSeconds: 300
+delivery:
+  semantics: at-least-once
+  idempotencyKeyRequired: true
+  eventIdRequired: true
+  eventIdIsIdempotencyKey: true
+  occurredAt: RFC3339-UTC
+  schemaEvolution: additive-fields-only-within-version
+faultCostToFac:
+  - name: fault.opened
+    required:
+      - eventId
+      - faultId
+      - machineCode
+      - department
+      - severity
+      - reportedAt
+    optional:
+      - partCode
+  - name: fault.closed
+    required:
+      - eventId
+      - faultId
+      - rootCauseCode
+      - closedAt
+      - downtimeMinutes
+      - lossMetricsVersion
+    optional:
+      - downtimeCost
+      - wasteCost
+      - spareCost
+      - lossCoefficient
+  - name: waste.recorded
+    required:
+      - eventId
+      - wasteId
+      - type
+      - quantity
+      - causeCode
+      - occurredAt
+    optional:
+      - faultId
+      - unitCost
+      - productionLine
+  - name: part.replaced
+    required:
+      - eventId
+      - faultId
+      - partCode
+      - quantity
+      - reasonCode
+      - replacedAt
+    optional:
+      - expectedLifeHours
+      - actualLifeHours
+facToFaultCost:
+  - name: qc.defect.critical
+    required:
+      - eventId
+      - defectCode
+      - quantity
+      - productionLine
+      - batchCode
+      - occurredAt
+    optional:
+      - machineCode
+      - partCode
+      - severity
+  - name: qc.gate.rejected
+    required:
+      - eventId
+      - batchCode
+      - reasonCode
+      - productionLine
+      - occurredAt
+    optional:
+      - machineCode
+      - partCode
+      - quantity
+  - name: qc.part.flagged
+    required:
+      - eventId
+      - partCode
+      - reasonCode
+      - occurredAt
+    optional:
+      - actualLifeHours
+      - expectedLifeHours
+eventRules:
+  - "Unknown events are rejected and recorded for operator review."
+  - "eventId is the idempotency key; retries with the same eventId return the original outcome and do not repeat side effects."
+  - "A FAC event may create a FaultCost fault only when the machine/part mapping is unambiguous or a reviewer resolves it."
+  - "Quality records remain owned by FAC; FaultCost stores only the linked identifiers and cost/fault data it owns."
+  - "Omit lossCoefficient until its formula and standards are formally approved."

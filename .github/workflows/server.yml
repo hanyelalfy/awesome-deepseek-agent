@@ -1,0 +1,40 @@
+name: FaultCost checks
+
+on:
+  push:
+    paths:
+      - "functions/**"
+      - "web-admin/**"
+      - "rules-tests/**"
+      - "firestore.rules"
+      - "firebase.json"
+      - "package.json"
+      - "packages/fac_contract/**"
+      - ".github/workflows/server.yml"
+  pull_request:
+    paths:
+      - "functions/**"
+      - "web-admin/**"
+      - "rules-tests/**"
+      - "firestore.rules"
+      - "firebase.json"
+      - "package.json"
+      - "packages/fac_contract/**"
+      - ".github/workflows/server.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: npm install
+      - run: npm run build
+      - run: npm run test:domain
+      - run: npm run test:rules

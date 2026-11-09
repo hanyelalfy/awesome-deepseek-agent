@@ -1,0 +1,29 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+functions/lib/
+.impeccable/
+
+# JavaScript
+node_modules/
+dist/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+.firebaserc
+!.firebaserc.example
+**/config/passwords.yaml
+**/config/development.yaml
+*.pem
+*.key
+
+# Local databases and generated reports
+*.sqlite
+*.sqlite3
+*.db
+coverage/

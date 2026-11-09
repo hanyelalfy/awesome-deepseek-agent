@@ -1,47 +1,58 @@
-<div align="center">
+# FaultCost
 
-# Awesome DeepSeek Agent
+منصة عربية لتسجيل أعطال المصنع، توزيع الفنيين، تحليل توقف الإنتاج والهدر، وربط أحداث الجودة بتطبيق **FAC** من خلال واجهة خدمة موثقة.
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+> **الحالة:** نسخة تأسيسية للاختبار المحلي. تشمل واجهة React وFirebase Authentication/Cloud Functions/Firestore والقواعد والمحاكيات. لم يُنشأ مشروع Firebase سحابي أو يُختبر نشر حي بعد. لا تستخدمها لبيانات إنتاج قبل إعداد مشروعك، ومراجعة الصلاحيات، واعتماد تكاليف ومعادلات المصنع.
 
-A curated list of guides for integrating **DeepSeek** models into popular AI agent and coding-assistant tools.
+## مبدأ المحاسبة الزمنية
 
-Each guide walks through installation, configuration, and first run — so you can start using DeepSeek-V4-Pro or DeepSeek-V4-Flash inside your favorite tool in a few minutes.
+- يبدأ زمن خسارة الإنتاج عند الإبلاغ، حتى لو ظل العطل منتظرًا فنيًا.
+- يبدأ زمن مسؤولية القسم عند إسناد فني، لا عند فتح البلاغ.
+- تُسجّل مراحل الانتظار والاستجابة والتشخيص والغيار والإصلاح والاختبار والمعوقات منفصلة، ولا تُجمع فترات متداخلة مرتين.
+- لا يُعرض معامل خسارة مركب قبل اعتماد معادلته ومعاييره. عند غياب معيار، تعرض المكونات المتاحة ويكون معامل المقارنة غير متاح.
+- إغلاق العطل يتطلب اختبارًا وسببًا جذريًا واعتماد مراقب التكاليف.
 
-</div>
+## المعمارية
 
+| المكوّن | التقنية | الدور |
+|---|---|---|
+| لوحة الويب | React / TypeScript / Vite | واجهة عربية RTL لتسجيل الدخول، الأعطال النشطة، وفتح العطل حسب الدور |
+| الخلفية | Firebase Cloud Functions v2 / TypeScript | التحقق من Firebase ID token والـ custom claims، الإسناد الذري، مراحل العطل، والتدقيق |
+| البيانات | Cloud Firestore | الأعطال والأصول والفنيون وسجل التدقيق ومفاتيح منع التكرار |
+| الهوية والاستضافة | Firebase Authentication + Hosting | دخول بالبريد وكلمة المرور واستضافة SPA |
+| الاختبار المحلي | Firebase Emulator Suite | محاكاة Auth وFunctions وFirestore وHosting دون المساس بمشروع إنتاج |
+| تطبيق الجودة | FAC عبر API / Cloud Functions | تبادل أحداث إصدار 1؛ لا اتصال مباشر من العملاء إلى Firestore الخاص بـ FAC |
 
-## Contents
+## تشغيل اختبارات المنطق وقواعد Firestore
 
-| Tool            | Description                                                                                                 | Guide                          |
-| --------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **AstrBot** | Open-source agent assistant for Feishu, Telegram and more, extensible with skills, plugins, and MCPs. | [Guide](./docs/astrbot.md) |
-| **Cherry Studio** | Open-source cross-platform desktop AI client with 300+ assistants, MCP support, knowledge bases, and multi-model chat. | [Guide](./docs/cherry_studio.md) |
-| **Claude Code** | AI coding assistant that runs in the terminal.                                                              | [Guide](./docs/claude_code.md) |
-| **Cline** | AI coding assistant extension for VS Code supporting multiple API providers. | [Guide](./docs/cline.md) |
-| **Codex** | OpenAI's coding agent. | [Guide](./docs/codex.md) |
-| **Crush**       | Glamorous open-source AI coding agent for the terminal with multi-model support and LSP integration.        | [Guide](./docs/crush.md)       |
-| **Deep Code** | Open-source terminal AI coding assistant for the DeepSeek-V4 model with deep thinking, reasoning effort control, and Agent Skills. | [Guide](./docs/deepcode.md) |
-| **DeepSeek-TUI** | Open-source Rust terminal coding assistant for DeepSeek-V4 — Codex-style architecture, sandboxed tools, MCP client + server, 1M context. | [Guide](./docs/deepseek-tui.md) |
-| **GitHub Copilot** | AI peer programmer built into VS Code. | [Guide](./docs/github_copilot.md) |
-| **GitHub Copilot CLI** | Terminal-native AI coding assistant with agentic capabilities. | [Guide](./docs/copilot_cli.md) |
-| **Hermes**      | Open-source self-improving AI agent built by Nous Research.                                                 | [Guide](./docs/hermes.md)      |
-| **Kilo Code** | AI coding assistant available as a CLI and editor extension. | [Guide](./docs/kilo_code.md) |
-| **Langcli** | Open-source AI coding assistant that is 100% compatible with Claude Code and supports mainstream LLM models | [Guide](./docs/langcli.md) |
-| **LobeHub** | LobeHub is your Chief Agent Operator, organizing your agents into 7×24 operations by hiring, scheduling, and reporting on your entire AI team. | [Guide](./docs/lobehub.md) |
-| **nanobot** | Open-source lightweight AI agent with chat platform integration, memory, MCP, and more. | [Guide](./docs/nanobot.md) |
-| **Oh My Pi** | Terminal AI coding agent forked from Pi with OMP-specific tools, model roles, MCP, plugins, and agent workflows. | [Guide](./docs/oh-my-pi.md) |
-| **OpenClaw**    | Open-source personal AI assistant that plugs into chat tools (Feishu, WeChat) and is extensible via Skills. | [Guide](./docs/openclaw.md)    |
-| **OpenCode**    | Open-source AI coding assistant available in terminal, web, and other forms.                                | [Guide](./docs/opencode.md)    |
-| **Pi**          | Minimal, extensible terminal coding harness with tree-structured sessions and custom providers.               | [Guide](./docs/pi_mono.md)     |
-| **Reasonix**    | DeepSeek-native coding agent that runs in the terminal — cache-first loop, MCP-native.                      | [Guide](./docs/reasonix.md)    |
-| **WorkBuddy/CodeBuddy** | AI agent and coding assistant with custom OpenAI-compatible model configuration. | [Guide](./docs/workbuddy.md) |
+المتطلبات: Node.js 20+، npm، Java 21+ لمحاكي Firestore، واتصال تنزيل أول مرة لحزم npm والمحاكيات.
 
-## Resources
+```powershell
+npm install
+npm test
+```
 
-- [DeepSeek Platform](https://platform.deepseek.com/) — get an API key.
-- [DeepSeek API Docs](https://api-docs.deepseek.com/) — API reference and guides.
+يشغّل `npm test` اختبارات TypeScript الصرفة ثم محاكي Firestore لاختبار منع القراءة والكتابة المباشرتين لكل الأدوار. استخدام معرّف `demo-faultcost-local` يبدأ المحاكي بوضع demo ولا يحتاج حساب Firebase ولا ينشئ مشروعًا سحابيًا.
 
-## Contributing
+لبناء الواجهة والخلفية وتشغيل المحاكيات محليًا:
 
-Have another tool you'd like to see here? See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on opening an issue or a pull request with a new guide.
+```powershell
+npm run build
+npm run emulators
+```
+
+افتح لوحة المحاكيات على `http://127.0.0.1:4000` والاستضافة على `http://127.0.0.1:5000`. إعداد Firebase للواجهة مأخوذ فقط من متغيرات `VITE_FIREBASE_*`. لا يوجد ملف إعداد شخصي أو اعتماد إنتاج في المستودع.
+
+## إعداد مشروع Firebase جديد
+
+راجع `docs/firebase-setup.md` للأوامر، مصادقة الحساب، إعداد Auth/Firestore، نشر القواعد والدوال والواجهة، وإنشاء أول مسؤول. إنشاء مشروع فعلي يحتاج حساب Google لديه صلاحية إنشاء Google Cloud projects؛ قد يحتاج نشر Cloud Functions خطة فوترة Blaze. لم يُنشأ مشروع سحابي باسم المستخدم تلقائيًا، ولم تُلمس إعدادات FAC.
+
+## حدود النسخة
+
+- لا يوجد تطبيق Flutter حتى الآن.
+- تشغيل الوظائف يتطلب حسابات Auth وcustom claims؛ أول مسؤول يُهيأ من بيئة موثوقة بخطوة bootstrap صريحة.
+- قواعد Firestore تمنع وصول العملاء المباشر، وتصل الواجهة للبيانات عبر وظائف callable.
+- تكامل FAC موثق كعقد مقترح؛ لا يمكن إثبات الاتصال حتى يتوفر مصدر FAC أو API معتمد وبيئة اختبار.
+- لا يُحسب معامل خسارة مركب أو تكلفة كلية عند غياب المدخلات المالية والمعايير المعتمدة.
+
+راجع `docs/architecture.md` و`docs/fac-integration.md` لحدود المجال والتكامل.
